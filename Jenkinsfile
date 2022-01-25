@@ -1,12 +1,15 @@
 node("gcloud") {
-    /*
+    
     environment {
         GCLOUD_KEY = credentials('gcp-terraform-auth')
+        KEY_FILE=
     }
-    */
+    
     stage('Clone') {
         // Clone the configuration repository
         cleanWs()
+        sh script: 'mkdir -p creds'
+        sh script: 'echo $GCLOUD_KEY | base64 -d > ./creds/serviceaccount.json'
         git branch: 'main', 
             url: 'https://github.com/almacro/tf-newdemo.git'
     }
@@ -25,21 +28,15 @@ node("gcloud") {
     }
     stage('Backend-Plan') {
         // Create Terraform plan for backend resources
-        withCredentials([string(credentialsId: 'gcp-terraform-auth', variable: 'GCLOUD_KEY')]) {
             dir('./remote_resources') {
-                sh("gcloud auth activate-service-account --key-file=$GCLOUD_KEY")
                 sh script: '../terraform plan \
                 -out backend.tfplan'
             }
-        }
     }
     stage('Destroy') {
         input 'Destroy?'
-        withCredentials([string(credentialsId: 'gcp-terraform-auth', variable: 'GCLOUD_KEY')]) {
             dir('./remote_resources') {
-                sh("gcloud auth activate-service-account --key-file=$GCLOUD_KEY")
                 sh script: '../terraform destroy -auto-approve'
             }
-        }
     }
 }
