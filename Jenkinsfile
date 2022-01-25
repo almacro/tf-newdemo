@@ -15,7 +15,7 @@ node("gcloud") {
     stage('Backend-Init') {
         // Initialize the Terraform configuration
         dir('remote_resources') {
-            sh script: '../../terraform init -input false'
+            sh script: '../terraform init -input false'
         }
     }
     stage('Backend-Plan') {
@@ -23,7 +23,7 @@ node("gcloud") {
         withCredentials([string(credentialsId: 'gcp-terraform-auth', variable: 'GCLOUD_KEY')]) {
             dir('remote_resources') {
                 sh("gcloud auth activate-service-account --key-file=${GCLOUD_KEY}")
-                sh script: '../../terraform plan \
+                sh script: '../terraform plan \
                 -out backend.tfplan'
             }
         }
@@ -33,7 +33,7 @@ node("gcloud") {
         withCredentials([string(credentialsId: 'gcp-terraform-auth', variable: 'GCLOUD_KEY')]) {
             dir('remote_resources') {
                 sh("gcloud auth activate-service-account --key-file=${GCLOUD_KEY}")
-                sh script: '../../terraform destroy -auto-approve'
+                sh script: '../terraform destroy -auto-approve'
             }
         }
     }
