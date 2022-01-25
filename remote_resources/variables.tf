@@ -1,7 +1,7 @@
 variable "project" {}
 
 variable "credentials_file" {
-    default = "./creds/serviceaccount.json"
+    default = "../creds/serviceaccount.json"
 }
 
 variable "region" {
