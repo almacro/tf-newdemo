@@ -39,7 +39,7 @@ node("gcloud") {
         }
     }
     stage('Backend-Apply') {
-        dir('Backend-Apply') {
+        dir('./remote_resources') {
             unstash 'backend-plan'
             sh script: 'sudo ../terraform apply backend.tfplan'
         }
