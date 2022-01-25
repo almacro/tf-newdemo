@@ -2,7 +2,6 @@ node("gcloud") {
     
     environment {
         GCLOUD_KEY = credentials('gcp-terraform-auth')
-        KEY_FILE=
     }
     
     stage('Clone') {
