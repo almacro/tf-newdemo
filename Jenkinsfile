@@ -15,6 +15,7 @@ node("gcloud") {
         sh script: "ls $WORKSPACE"
         git branch: 'main', 
             url: 'https://github.com/almacro/tf-newdemo.git'
+        sh script: "ls $WORKSPACE"
     }
     stage('Download') {
         // Download Terrform
