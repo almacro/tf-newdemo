@@ -11,9 +11,8 @@ node("gcloud") {
         cleanWs()
         sh script: 'mkdir -p creds'
         sh script: 'echo $GCLOUD_KEY | base64 -d > ./creds/serviceaccount.json'
-        sh script: "printf '%s = %s\n' 'project' ${params.GCLOUD_PROJECT_ID} >> ./ci.auto.tfvars"
-        sh script: 'echo $(pwd)'
-        sh script: "ls ./ci.auto.tfvars"
+        sh script: "printf '%s = %s\n' 'project' ${params.GCLOUD_PROJECT_ID} >> $WORKSPACE/ci.auto.tfvars"
+        sh script: "ls $WORKSPACE"
         git branch: 'main', 
             url: 'https://github.com/almacro/tf-newdemo.git'
     }
@@ -37,7 +36,7 @@ node("gcloud") {
                 sh script: 'ls ci.auto.tfvars'
                 sh script: '../terraform plan \
                 -out backend.tfplan \
-                -var-file="../ci.auto.tfvars"'
+                -var-file="$WORKSPACE/ci.auto.tfvars"'
             }
     }
     stage('Destroy') {
@@ -45,7 +44,7 @@ node("gcloud") {
             dir('./remote_resources') {
                 sh script: '../terraform destroy \
                 -auto-approve \
-                -var-file="../ci.auto.tfvars"'
+                -var-file="$WORKSPACE/ci.auto.tfvars"'
             }
     }
 }
