@@ -11,7 +11,7 @@ node("gcloud") {
         cleanWs()
         sh script: 'mkdir -p creds'
         sh script: 'echo $GCLOUD_KEY | base64 -d > ./creds/serviceaccount.json'
-        sh script: 'printf "%s = %s\n" "project" "${params.GCLOUD_PROJECT_ID}" >> ci.auto.tfvars'
+        sh script: "printf '%s = %s\n' 'project' '${params.GCLOUD_PROJECT_ID}' >> ci.auto.tfvars"
         git branch: 'main', 
             url: 'https://github.com/almacro/tf-newdemo.git'
     }
