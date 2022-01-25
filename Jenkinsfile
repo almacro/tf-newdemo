@@ -31,12 +31,20 @@ node("gcloud") {
     }
     stage('Backend-Plan') {
         // Create Terraform plan for backend resources
-            dir('./remote_resources') {
-                sh script: 'sudo ../terraform plan \
-                -out backend.tfplan \
-                -var-file=../ci.auto.tfvars'
-            }
+        dir('./remote_resources') {
+            sh script: 'sudo ../terraform plan \
+            -out backend.tfplan \
+            -var-file=../ci.auto.tfvars'
+        }
     }
+    stage('Backend-Apply') {
+        dir('Backend-Apply') {
+            sh script: 'sudo ../terraform apply backend.tfplan'
+        }
+    }
+    /*
+TODO add in backend-apply and main config stages
+    */
     stage('Destroy') {
         input 'Destroy?'
             dir('./remote_resources') {
