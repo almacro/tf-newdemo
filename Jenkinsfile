@@ -35,10 +35,12 @@ node("gcloud") {
             sh script: 'sudo ../terraform plan \
             -out backend.tfplan \
             -var-file=../ci.auto.tfvars'
+            stash includes: 'backend.tfplan', name: 'backend-plan'
         }
     }
     stage('Backend-Apply') {
         dir('Backend-Apply') {
+            unstash 'backend-plan'
             sh script: 'sudo ../terraform apply backend.tfplan'
         }
     }
