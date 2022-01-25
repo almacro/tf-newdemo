@@ -28,7 +28,8 @@ node("gcloud") {
         // Initialize the Terraform configuration
         dir('./remote_resources') {
             sh script: 'echo $(pwd)'
-            sh script: '../terraform init -input false'
+            sh script: 'ls *.tf'
+            sh script: '../terraform init -input=false'
         }
     }
     stage('Backend-Plan') {
