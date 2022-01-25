@@ -32,7 +32,7 @@ node("gcloud") {
         // Create Terraform plan for backend resources
             dir('./remote_resources') {
                 //sh script: 'ls -l ..'
-                sh script: "gcloud auth application-default login --project ${var.project}"
+                sh script: "gcloud auth application-default login --project ${params.GCLOUD_PROJECT_ID}}"
                 sh script: '../terraform plan \
                 -out backend.tfplan \
                 -var-file=../ci.auto.tfvars'
