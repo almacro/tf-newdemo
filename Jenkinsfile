@@ -35,7 +35,7 @@ node("gcloud") {
             dir('./remote_resources') {
                 //sh script: 'ls -l ..'
                 //sh script: "sudo gcloud config set project $GCLOUD_PROJECT_ID"
-                //sh script: "sudo gcloud auth application-default login --project $GCLOUD_PROJECT_ID"
+                sh script: "sudo gcloud auth application-default login --project $GCLOUD_PROJECT_ID"
                 sh script: '../terraform plan \
                 -out backend.tfplan \
                 -var-file=../ci.auto.tfvars'
