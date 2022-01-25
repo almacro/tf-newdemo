@@ -2,6 +2,7 @@ node("gcloud") {
     
     environment {
         GCLOUD_KEY = credentials('gcp-terraform-auth')
+        GOOGLE_APPLICATION_CREDENTIALS = "~/.config/gcloud/application_default_credentials.json"
     }
     /*
     parameters {
@@ -13,9 +14,12 @@ node("gcloud") {
         cleanWs()
         git branch: 'main', 
             url: 'https://github.com/almacro/tf-newdemo.git'
-        sh script: 'mkdir -p creds'
-        sh script: 'echo $GCLOUD_KEY | base64 -d > ./creds/serviceaccount.json'
+        sh script: 'mkdir -p ~/.config/gcloud'
+        sh script: 'echo $GCLOUD_KEY | base64 -d > $GOOGLE_APPLICATION_CREDENTIALS'
         sh script: "printf '%s = \"%s\"\n' 'project' $params.GCLOUD_PROJECT_ID > ./ci.auto.tfvars"
+        sh 
+        sh script: "sudo gcloud config set project $GCLOUD_PROJECT_ID"
+
     }
     stage('Download') {
         // Download Terrform
@@ -34,8 +38,7 @@ node("gcloud") {
         // Create Terraform plan for backend resources
             dir('./remote_resources') {
                 //sh script: 'ls -l ..'
-                //sh script: "sudo gcloud config set project $GCLOUD_PROJECT_ID"
-                sh script: "sudo gcloud auth application-default login --project $GCLOUD_PROJECT_ID"
+                //sh script: "sudo gcloud auth application-default login --project $GCLOUD_PROJECT_ID"
                 sh script: '../terraform plan \
                 -out backend.tfplan \
                 -var-file=../ci.auto.tfvars'
