@@ -4,11 +4,7 @@ node("gcloud") {
         GCLOUD_KEY = credentials('gcp-terraform-auth')
         GOOGLE_APPLICATION_CREDENTIALS = "creds/serviceaccount.json"
     }
-    /*
-    parameters {
-        string(name: 'GCLOUD_PROJECT_ID')
-    }
-    */
+
     stage('Clone') {
         // Clone the configuration repository
         cleanWs()
