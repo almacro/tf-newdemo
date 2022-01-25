@@ -31,7 +31,8 @@ node("gcloud") {
     stage('Backend-Plan') {
         // Create Terraform plan for backend resources
             dir('./remote_resources') {
-                sh script: 'ls -l ..'
+                //sh script: 'ls -l ..'
+                sh script: "gcloud auth application-default login --project ${var.project}"
                 sh script: '../terraform plan \
                 -out backend.tfplan \
                 -var-file=../ci.auto.tfvars'
