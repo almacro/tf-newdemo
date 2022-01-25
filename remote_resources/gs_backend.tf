@@ -15,12 +15,19 @@ variable "zone" {
     default = "us-west1-b"
 }
 
-variable "bucket_name" {
-    default = "${var.project}-tfstate"
+variable "override_bucket_name" {
+    default = ""
 }
 
 variable "storage_class" {
     default = "regional"
+}
+
+# //////////////////////////////
+# LOCALS
+# //////////////////////////////
+locals {
+  bucket_name = "${var.override_bucket_name != "" ? var.override_bucket_name : "${var.project}-tfstate"}"
 }
 
 # //////////////////////////////
