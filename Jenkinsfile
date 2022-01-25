@@ -3,12 +3,15 @@ node("gcloud") {
     environment {
         GCLOUD_KEY = credentials('gcp-terraform-auth')
     }
-    
+    parameters {
+        string(name: 'GCLOUD_PROJECT_ID')
+    }
     stage('Clone') {
         // Clone the configuration repository
         cleanWs()
         sh script: 'mkdir -p creds'
         sh script: 'echo $GCLOUD_KEY | base64 -d > ./creds/serviceaccount.json'
+        sh script: 'printf "%s = %s\n" "project" "${params.GCLOUD_PROJECT_ID}" >> ci.auto.tfvars'
         git branch: 'main', 
             url: 'https://github.com/almacro/tf-newdemo.git'
     }
@@ -22,20 +25,24 @@ node("gcloud") {
     stage('Backend-Init') {
         // Initialize the Terraform configuration
         dir('./remote_resources') {
-            sh script: '../terraform init -input false'
+            sh script: 'echo $(pwd)'
+            sh script: '../terraform init -input false -var-file="../ci.auto.tfvars"'
         }
     }
     stage('Backend-Plan') {
         // Create Terraform plan for backend resources
             dir('./remote_resources') {
                 sh script: '../terraform plan \
-                -out backend.tfplan'
+                -out backend.tfplan \
+                -var-file="../ci.auto.tfvars"'
             }
     }
     stage('Destroy') {
         input 'Destroy?'
             dir('./remote_resources') {
-                sh script: '../terraform destroy -auto-approve'
+                sh script: '../terraform destroy \
+                -auto-approve \
+                -var-file="../ci.auto.tfvars"'
             }
     }
 }
