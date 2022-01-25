@@ -27,8 +27,6 @@ node("gcloud") {
     stage('Backend-Init') {
         // Initialize the Terraform configuration
         dir('./remote_resources') {
-            sh script: 'echo $(pwd)'
-            sh script: 'ls *.tf'
             sh script: '../terraform init -input=false'
         }
     }
@@ -37,7 +35,7 @@ node("gcloud") {
             dir('./remote_resources') {
                 sh script: '../terraform plan \
                 -out backend.tfplan \
-                -var-file="$WORKSPACE/ci.auto.tfvars"'
+                -var-file=../ci.auto.tfvars'
             }
     }
     stage('Destroy') {
@@ -45,7 +43,7 @@ node("gcloud") {
             dir('./remote_resources') {
                 sh script: '../terraform destroy \
                 -auto-approve \
-                -var-file="$WORKSPACE/ci.auto.tfvars"'
+                -var-file=../ci.auto.tfvars'
             }
     }
 }
