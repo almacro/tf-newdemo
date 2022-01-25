@@ -36,7 +36,6 @@ node("gcloud") {
     stage('Backend-Plan') {
         // Create Terraform plan for backend resources
             dir('./remote_resources') {
-                sh script: 'sudo gcloud compute instances list'
                 sh script: 'sudo ../terraform plan \
                 -out backend.tfplan \
                 -var-file=../ci.auto.tfvars'
@@ -45,7 +44,7 @@ node("gcloud") {
     stage('Destroy') {
         input 'Destroy?'
             dir('./remote_resources') {
-                sh script: '../terraform destroy \
+                sh script: 'sudo ../terraform destroy \
                 -auto-approve \
                 -var-file=../ci.auto.tfvars'
             }
