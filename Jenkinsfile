@@ -34,7 +34,7 @@ node("gcloud") {
         dir('./remote_resources') {
             sh script: 'sudo ../terraform plan \
             -out backend.tfplan \
-            -var-file=../ci.auto.tfvars'
+            -var-file=../ci.auto.tfvars && chmod 644 backend.tfplan'
             stash includes: 'backend.tfplan', name: 's1'
         }
     }
