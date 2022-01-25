@@ -35,7 +35,7 @@ node("gcloud") {
             dir('./remote_resources') {
                 sh script: '../terraform plan \
                 -out backend.tfplan \
-                -var-file=../ci.auto.tfvars'
+                -var-file=../../ci.auto.tfvars'
             }
     }
     stage('Destroy') {
@@ -43,7 +43,7 @@ node("gcloud") {
             dir('./remote_resources') {
                 sh script: '../terraform destroy \
                 -auto-approve \
-                -var-file=../ci.auto.tfvars'
+                -var-file=../../ci.auto.tfvars'
             }
     }
 }
