@@ -2,9 +2,9 @@ variable "project" {
 }
 
 variable "bucket" {
-    default = "tf-state-bucket"
+  default = "tf-state-bucket"
 }
 
 variable "region" {
-    default = "us-west1"
+  default = "us-west1"
 }
