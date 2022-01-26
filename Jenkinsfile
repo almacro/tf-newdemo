@@ -50,7 +50,6 @@ node("gcloud") {
             sh script: 'sudo ./terraform init \
                 -backend-config="bucket=$GCLOUD_PROJECT_ID-tfstate" \
                 -backend-config="prefix=terraform/state" \
-                -backend-config="region=us-west1" \
                 -input=false'
        }
     }
