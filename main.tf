@@ -76,7 +76,7 @@ data "google_iam_policy" "admin" {
   }
 }
 resource "google_service_account" "auditor" {
-  account_id   = "OffloadStation_Admin"
+  account_id   = "offload_admin"
   display_name = "A service account that manages the system."
 }
 resource "google_service_account_iam_policy" "admin" {
