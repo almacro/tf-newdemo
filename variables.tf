@@ -1,3 +1,6 @@
+variable "project" {
+}
+
 variable "bucket" {
     default = "tf-state-bucket"
 }
