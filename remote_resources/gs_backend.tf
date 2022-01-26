@@ -50,7 +50,12 @@ provider "google" {
 # //////////////////////////////
 resource "google_storage_bucket" "backend-tfremotestate" {
     name = local.bucket_name
+    
     location = upper(var.region)
     force_destroy = true
     storage_class = upper(var.storage_class)
+
+    versioning {
+        enabled = true
+    }
 }
