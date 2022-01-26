@@ -12,7 +12,7 @@ data "google_iam_policy" "intake_writer" {
   }
 }
 resource "google_service_account" "data_uploader" {
-  account_id   = "offload-station-data-uploader"
+  account_id   = "offload-data-uploader"
   display_name = "A service account that permits a Data Uploader to write to the Intake bucket."
 }
 resource "google_service_account_iam_policy" "data_uploader" {
@@ -28,7 +28,7 @@ data "google_iam_policy" "intake_reader" {
   }
 }
 resource "google_service_account" "data_consumer" {
-  account_id   = "offload-station-data-consumer"
+  account_id   = "offload-data-consumer"
   display_name = "A service account that permits a Data Consumer to read from the Intake bucket."
 }
 resource "google_service_account_iam_policy" "data_consumer" {
@@ -44,7 +44,7 @@ data "google_iam_policy" "outtake_writer" {
   }
 }
 resource "google_service_account" "data_producer" {
-  account_id   = "offload-station-data-producer"
+  account_id   = "offload-data-producer"
   display_name = "A service account that permits a Data Producer to write to the Outtake bucket."
 }
 resource "google_service_account_iam_policy" "data_producer" {
@@ -60,7 +60,7 @@ data "google_iam_policy" "outtake_reader" {
   }
 }
 resource "google_service_account" "data_downloader" {
-  account_id   = "offload-station-data-downloader"
+  account_id   = "offload-data-downloader"
   display_name = "A service account that permits a Data Downloader to read from the Outtake bucket."
 }
 resource "google_service_account_iam_policy" "data_downloader" {
