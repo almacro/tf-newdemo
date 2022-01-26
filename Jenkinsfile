@@ -34,7 +34,8 @@ node("gcloud") {
         dir('./remote_resources') {
             sh script: 'sudo ../terraform plan \
             -out backend.tfplan \
-            -var-file=../ci.auto.tfvars && sudo chown jenkins:jenkins backend.tfplan'
+            -var-file=../ci.auto.tfvars && \
+            sudo chown jenkins:jenkins backend.tfplan'
             stash includes: 'backend.tfplan', name: 's1'
         }
     }
@@ -44,11 +45,30 @@ node("gcloud") {
             sh script: 'sudo ../terraform apply backend.tfplan'
         }
     }
+    stage('Config-Init') {
+        dir('.') {
+            sh script: 'sudo ./terraform init'
+       }
+    }
+    stage('Config-Plan') {
+        // Generate Terraform plan
+        dir('.') {
+            sh script: 'sudo ./terraform plan \
+            -out s1.tfplan \
+            -var-file=./ci.auto.tfvars && \
+            sudo chown jenkins:jenkins s1.tfplan'
+        }
+    }
     /*
 TODO add in backend-apply and main config stages
     */
     stage('Destroy') {
         input 'Destroy?'
+            dir('.') {
+                sh script: 'sudo ./terraform destroy \
+                -auto-approve \
+                -var-file=./ci.auto.tfvars'
+            }
             dir('./remote_resources') {
                 sh script: 'sudo ../terraform destroy \
                 -auto-approve \
