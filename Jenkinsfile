@@ -47,7 +47,11 @@ node("gcloud") {
     }
     stage('Config-Init') {
         dir('.') {
-            sh script: 'sudo ./terraform init'
+            sh script: 'sudo ./terraform init \
+                -backend-config="bucket=$GCLOUD_PROJECT_ID-tfstate" \
+                -backend-config="key=terraform/state" \
+                -backend-config="region=us-west1" \
+                -input=false'
        }
     }
     stage('Config-Plan') {
