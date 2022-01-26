@@ -18,9 +18,9 @@ node("gcloud") {
     }
     stage('Download') {
         // Download Terrform
-        sh label: '', curl https://mirror/terraform/0.12.31/terraform_0.12.31_linux_amd64.zip \
-            --output terraform_0.12.31_linux_amd64.zip 
-           script: '\
+        sh label: '', 
+           script: 'curl https://mirror/terraform/0.12.31/terraform_0.12.31_linux_amd64.zip \
+            --output terraform_0.12.31_linux_amd64.zip \
              && unzip terraform_0.12.31_linux_amd64.zip'
     }
     stage('Backend-Init') {
