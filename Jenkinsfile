@@ -62,20 +62,25 @@ node("gcloud") {
             sudo chown jenkins:jenkins s1.tfplan'
         }
     }
+    stage('Config-Apply') {
+        dir('.') {
+            sh script: 'sudo ../terraform apply s1.tfplan'
+        }
+    }
     /*
-TODO add in backend-apply and main config stages
-    */
+     * TODO add in config-apply and main config stages
+     */
     stage('Destroy') {
         input 'Destroy?'
-            dir('.') {
-                sh script: 'sudo ./terraform destroy \
-                -auto-approve \
-                -var-file=./ci.auto.tfvars'
-            }
-            dir('./remote_resources') {
-                sh script: 'sudo ../terraform destroy \
-                -auto-approve \
-                -var-file=../ci.auto.tfvars'
-            }
+        dir('.') {
+            sh script: 'sudo ./terraform destroy \
+            -auto-approve \
+            -var-file=./ci.auto.tfvars'
+        }
+        dir('./remote_resources') {
+            sh script: 'sudo ../terraform destroy \
+            -auto-approve \
+            -var-file=../ci.auto.tfvars'
+        }
     }
 }
