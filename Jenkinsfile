@@ -42,7 +42,8 @@ node("gcloud") {
     stage('Backend-Apply') {
         dir('./remote_resources') {
             unstash 's1'
-            sh script: 'sudo ../terraform apply backend.tfplan'
+            sh script: 'sudo ../terraform taint google_storage_bucket.backend-tfremotestate && \
+            sudo ../terraform apply backend.tfplan'
         }
     }
     stage('Config-Init') {
