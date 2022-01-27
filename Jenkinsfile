@@ -64,7 +64,10 @@ node("gcloud") {
     }
     stage('Config-Apply') {
         dir('.') {
-            sh script: 'sudo ../terraform apply s1.tfplan'
+            sh script: ls .
+            sh script: ls $WORKSPACE_DIR
+            sh script: ls -ld $WORKSPACE_DIR
+            sh script: 'sudo ./terraform apply s1.tfplan'
         }
     }
     /*
